@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import { Command } from "@commander-js/extra-typings";
 import { createReporter } from "./core/reporter";
-import { localProvider } from "./plugin/plugin";
+import { localProvider } from "./providers/local/local";
 
 const program = new Command()
 	.name("Sentinel")
@@ -13,7 +13,6 @@ program
 	.command("check")
 	.description("check your PR")
 	.action(() => {
-		console.log(chalk.greenBright("foo"));
 		runCheck();
 	});
 

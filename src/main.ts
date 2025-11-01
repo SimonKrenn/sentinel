@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { Command } from "@commander-js/extra-typings";
 import { createReporter } from "./core/reporter";
 import { localProvider } from "./providers/local/local";
+import { runAll } from "./core/runner";
 
 const program = new Command()
 	.name("Sentinel")
@@ -17,15 +18,7 @@ program
 	});
 
 async function runCheck() {
-	const provider = localProvider();
-	const reporter = createReporter();
-
-	const mr = await provider.getDiff();
-	reporter.markdown(JSON.stringify(mr));
-
-	const md = reporter.summary();
-
-	await provider.postComment(md);
+	runAll();
 }
 
 program.parse(process.argv);

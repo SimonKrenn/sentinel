@@ -17,7 +17,16 @@ export function createReporter(): Reporter {
 		},
 		//TODO
 		summary: () => {
-			return JSON.stringify(items);
+			return {
+				items,
+				toMarkdown: () => {
+					const header = `### Sentinel report\n\n`;
+
+					const report = items.map((item) => `- ${item.message}`);
+
+					return [header, ...report].join("\n");
+				},
+			};
 		},
 	};
 }

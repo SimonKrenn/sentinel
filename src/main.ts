@@ -3,6 +3,10 @@ import { Command } from "@commander-js/extra-typings";
 import { createReporter } from "./core/reporter";
 import { localProvider } from "./providers/local/local";
 import { runAll } from "./core/runner";
+import { loadConfig } from "./core/config";
+import type { SentinelPlugin } from "./core/types";
+import { resolveProvider } from "./providers/resolver";
+import { loadPlugins } from "./plugin/plugin";
 
 const program = new Command()
 	.name("Sentinel")
@@ -18,7 +22,12 @@ program
 	});
 
 async function runCheck() {
-	runAll();
+	const provider = resolveProvider("local", process.env);
+	const cfg = await loadConfig();
+
+	const plugins = await loadPlugins(cfg);
+
+	await runAll(provider, plugins, cfg.settings || {});
 }
 
 program.parse(process.argv);

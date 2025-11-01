@@ -25,4 +25,8 @@ export const runAll = async (
 	const [mr, diff] = await Promise.all([provider.getPR(), provider.getDiff()]);
 
 	await Promise.all(plugins.map((p) => p.run?.(ctx, diff, mr)));
+
+	const md = report.summary().toMarkdown();
+
+	await provider.postComment(md);
 };

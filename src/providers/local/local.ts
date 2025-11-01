@@ -38,7 +38,7 @@ export const localProvider = (): Provider => {
 				});
 		},
 		getPR: async () => {
-			throw new Error("not supported in this env");
+			return Promise.resolve(null);
 		},
 		postComment: async (md: string) => {
 			console.log(md);

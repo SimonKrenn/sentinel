@@ -13,7 +13,7 @@ export type Reporter = {
 	warn: (msg: string, otps?: any) => void;
 	info: (msg: string, otps?: any) => void;
 	markdown: (md: string) => void;
-	summary: () => string;
+	summary: () => { items: ReportItem[]; toMarkdown: () => string };
 };
 
 export type DiffFile = {
@@ -48,8 +48,8 @@ export type SentinelContext = {
 
 export type SentinelPlugin = {
 	name: string;
-	setup: (ctx: SentinelContext) => Promise<void> | void;
-	run: (
+	setup?: (ctx: SentinelContext) => Promise<void> | void;
+	run?: (
 		ctx: SentinelContext,
 		diff: DiffFile[],
 		pr: MRInfo | null,

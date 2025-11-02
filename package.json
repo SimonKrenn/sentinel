@@ -1,10 +1,12 @@
 {
-  "name": "sentinel",
+  "name": "@sentinelts/sentinel",
+  "version": "0.0.1",
   "module": "index.ts",
   "type": "module",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@types/bun": "latest",
+    "oxfmt": "^0.9.0",
     "oxlint-tsgolint": "^0.4.0"
   },
   "peerDependencies": {
@@ -17,9 +19,9 @@
     "oxlint": "^1.25.0"
   },
   "scripts": {
-		"lint": "oxlint --type-aware",
-		"lint:fix": "oxlint --type-aware --fix",
-		"lint:ci": "oxlint --type-aware --format github",
-		"build:prod": "bun build ./src/main.ts --compile --outfile dist/sentinel"
+    "lint": "oxlint --type-aware",
+    "lint:fix": "oxlint --type-aware --fix",
+    "lint:ci": "oxlint --type-aware --format github",
+    "build:prod": "bun build ./src/main.ts --compile --outfile dist/sentinel"
   }
 }

@@ -22,6 +22,8 @@
     "lint": "oxlint --type-aware",
     "lint:fix": "oxlint --type-aware --fix",
     "lint:ci": "oxlint --type-aware --format github",
+		"format": "oxfmt",
+		"format:ci": "oxfmt --check",
     "build:prod": "bun build ./src/main.ts --compile --outfile dist/sentinel"
   }
 }

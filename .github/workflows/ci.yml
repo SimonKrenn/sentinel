@@ -24,5 +24,8 @@ jobs:
       - name: Run lint
         run: bun run lint:ci
 
+      - name: Run format
+        run: bun run format:ci
+
       - name: Build binary
         run: bun run build:prod

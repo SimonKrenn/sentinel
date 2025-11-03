@@ -30,17 +30,11 @@ export interface PRInfo {
 	webUrl?: string;
 }
 
-export interface GithubPRInfo extends PRInfo {}
-
 export interface Provider {
 	name: "local" | "github" | "gitlab" | "bitbucket";
 	getDiff: () => Promise<DiffFile[]>;
 	getPR: () => Promise<PRInfo | null>;
 	postComment(markdown: string): Promise<void>;
-}
-
-export interface GithubProvider extends Provider {
-	name: "github";
 }
 
 export type SentinelContext = {

@@ -7,15 +7,15 @@
     "docs"
   ],
   "scripts": {
-    "test": "bun --cwd packages/sentinel test",
-    "lint": "bun --cwd packages/sentinel run lint",
-    "lint:fix": "bun --cwd packages/sentinel run lint:fix",
-    "lint:ci": "bun --cwd packages/sentinel run lint:ci",
-    "format": "bun --cwd packages/sentinel run format",
-    "format:ci": "bun --cwd packages/sentinel run format:ci",
-    "build:prod": "bun --cwd packages/sentinel run build:prod",
-    "docs:dev": "bun --cwd docs run dev",
-    "docs:build": "bun --cwd docs run build",
-    "docs:preview": "bun --cwd docs run preview"
+    "test": "bun run --filter @sentinel-ts/sentinel test",
+    "lint": "bun run --filter @sentinel-ts/sentinel lint",
+    "lint:fix": "bun run --filter @sentinel-ts/sentinel lint:fix",
+    "lint:ci": "bun run --filter @sentinel-ts/sentinel lint:ci",
+    "format": "bun run --filter @sentinel-ts/sentinel format",
+    "format:ci": "bun run --filter @sentinel-ts/sentinel format:ci",
+    "build:prod": "bun run --filter @sentinel-ts/sentinel build:prod",
+    "docs:dev": "bun run --filter @sentinel-ts/docs dev",
+    "docs:build": "bun run --filter @sentinel-ts/docs build",
+    "docs:preview": "bun run --filter @sentinel-ts/docs preview"
   }
 }

@@ -1,24 +1,25 @@
 # Sentinel
 
-Lint everything but your code
+Lint everything but your code.
 
+## Monorepo layout
+- `packages/sentinel`: CLI source, tests, and build tooling
+- `docs`: Astro Starlight docs site
 
-To install dependencies:
+## Setup
+Install all workspace dependencies from the repo root:
 
 ```bash
 bun install
 ```
 
-To run:
+## Useful scripts
+Run these from the repo root so they target the right workspace:
 
 ```bash
-bun run index.ts
+bun run test        # CLI tests
+bun run lint:ci     # CLI lint (CI mode)
+bun run build:prod  # CLI binary output to dist/
+bun run docs:dev    # Docs dev server
+bun run docs:build  # Docs production build
 ```
-
-To run tests:
-
-```bash
-bun test
-```
-
-This project was created using `bun init` in bun v1.3.1. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.

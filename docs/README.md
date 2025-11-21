@@ -1,49 +1,30 @@
-# Starlight Starter Kit: Basics
+# Sentinel Docs
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+Documentation for Sentinel, the "lint everything but your code" tool.
 
-```
-npm create astro@latest -- --template starlight
-```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+## Project structure
 
 ```
 .
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
+├── public/          # Static assets served as-is
+├── src/             # Starlight content, assets, and config
+│   ├── assets/      # Images and shared media
+│   ├── content/     # Markdown/MDX documentation pages
 │   └── content.config.ts
-├── astro.config.mjs
+├── astro.config.mjs # Starlight site configuration
 ├── package.json
 └── tsconfig.json
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+## Commands
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+Run these from the `docs/` directory or via the workspace scripts in the repo root:
 
-Static assets, like favicons, can be placed in the `public/` directory.
+| Command | Action |
+| --- | --- |
+| `bun install` | Install documentation dependencies |
+| `bun run dev` | Start the docs dev server at `localhost:4321` |
+| `bun run build` | Build the production site to `./dist/` |
+| `bun run preview` | Preview the production build locally |
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+You can also run the root-level scripts (`bun run docs:dev`, `bun run docs:build`, `bun run docs:preview`) to target this workspace from the monorepo root.

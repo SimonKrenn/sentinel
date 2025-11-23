@@ -9,25 +9,25 @@ import { resolveProvider } from "./providers/resolver";
 import { loadPlugins } from "./plugin/plugin";
 
 const program = new Command()
-	.name("Sentinel")
-	.description("lint everything but your code")
-	.version("0.0.1")
-	.option("-h, --help");
+  .name("Sentinel")
+  .description("lint everything but your code")
+  .version("0.0.1")
+  .option("-h, --help");
 
 program
-	.command("check")
-	.description("check your PR")
-	.action(() => {
-		runCheck();
-	});
+  .command("check")
+  .description("check your PR")
+  .action(() => {
+    runCheck();
+  });
 
 async function runCheck() {
-	const provider = resolveProvider("github", process.env);
-	const cfg = await loadConfig();
+  const provider = resolveProvider("github", process.env);
+  const cfg = await loadConfig();
 
-	const plugins = await loadPlugins(cfg);
+  const plugins = await loadPlugins(cfg);
 
-	await runAll(provider, plugins, cfg.settings || {});
+  await runAll(provider, plugins, cfg.settings || {});
 }
 
 program.parse(process.argv);

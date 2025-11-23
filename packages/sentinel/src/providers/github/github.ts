@@ -14,27 +14,51 @@ export const github = (env = process.env): GithubProvider => {
 		getPR: async () => {
 			const [owner, repo] = ciPlatform.repoSlug.split("/");
 			if (!owner || !repo) {
-				throw new Error(`Invalid GitHub repo slug: ${ciPlatform.repoSlug}`);
+				console.error(`Invalid GitHub repo slug: ${ciPlatform.repoSlug}`);
+				return null;
 			}
 
-			const response = await API.pulls.get({
-				owner,
-				repo,
-				pull_number: ciPlatform.PR_IID,
-			});
+			try {
+				const response = await API.pulls.get({
+					owner,
+					repo,
+					pull_number: ciPlatform.PR_IID,
+				});
 
-			const pr = response.data;
+				const pr = response.data;
 
-			return {
-				id: String(pr.id),
-				title: pr.title ?? "",
-				author: pr.user?.login ?? "",
-				sourceBranch: pr.head.ref,
-				targetBranch: pr.base.ref,
-				webUrl: pr.html_url,
-			};
+				return {
+					id: String(pr.id),
+					title: pr.title ?? "",
+					author: pr.user?.login ?? "",
+					sourceBranch: pr.head.ref,
+					targetBranch: pr.base.ref,
+					webUrl: pr.html_url,
+				};
+			} catch (error) {
+				const message =
+					error instanceof Error
+						? error.message
+						: "Unknown error while contacting GitHub";
+				console.error(
+					`Failed to fetch PR ${ciPlatform.PR_IID} from ${ciPlatform.repoSlug}: ${message}`,
+				);
+				return null;
+			}
 		},
 		postComment: async (md: string) => {
+			const [owner, repo] = ciPlatform.repoSlug.split("/");
+			try {
+				const res = await API.issues.createComment({
+					body: md,
+					issue_number: ciPlatform.PR_IID,
+					owner: owner!,
+					repo: repo!,
+				});
+			} catch {
+				console.error("not posted :(");
+			}
+
 			// Implement GitHub specific logic to post a comment
 		},
 	};
@@ -43,8 +67,6 @@ export const github = (env = process.env): GithubProvider => {
 const githubActions = (env = process.env): GithubActionsPlatform => {
 	let eventPath: string = env.GITHUB_EVENT_PATH || "github/workflow/event.json";
 	const event: GithubWebhookEvent = JSON.parse(readFileSync(eventPath, "utf8"));
-
-	console.log(eventPath, event);
 
 	return {
 		name: "Github Actions",

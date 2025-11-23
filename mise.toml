@@ -8,9 +8,9 @@ run = "act pull_request --container-architecture linux/amd64 -e fixtures/github-
 
 [tasks."gitlab:preview"]
 description = "Run the preview:github job locally"
-run = "bunx gitlab-ci-local run preview:github"
+run = "bunx gitlab-ci-local run sentinel:preview"
 
 [tasks."gitlab:preview:debug"]
-description = "Run preview:github locally with CI_DEBUG_TRACE"
-run = "bunx gitlab-ci-local run preview:github"
+description = "Run sentinel:preview locally with CI_DEBUG_TRACE"
+run = "bunx gitlab-ci-local run sentinel:preview"
 env = { CI_DEBUG_TRACE = "true" }

@@ -22,7 +22,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: run check
-        run: bun preview:github
+        run: bun sentinel:preview
 
       - name: Run lint
         run: bun run lint:ci

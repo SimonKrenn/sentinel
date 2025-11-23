@@ -1,40 +1,92 @@
 import { Octokit } from "@octokit/rest";
-import type { PRInfo, Provider } from "../../core/types";
+import { readFileSync } from "fs";
+import type { CIPlatform, PRInfo, RepoProvider } from "../../core/types";
 
-export const githubProvider = (env = process.env): GithubProvider => {
-  const githubClient = githubFacade();
+export const github = (env = process.env): GithubProvider => {
+  const ciPlatform = githubActions(env);
+  const API = new Octokit();
 
   return {
     name: "github",
     getDiff: async (): Promise<any[]> => {
-      // Implement GitHub specific logic to get the diff
       return [];
     },
     getPR: async () => {
-      return githubClient.pr;
+      const [owner, repo] = ciPlatform.repoSlug.split("/");
+      if (!owner || !repo) {
+        console.error(`Invalid GitHub repo slug: ${ciPlatform.repoSlug}`);
+        return null;
+      }
+
+      try {
+        const response = await API.pulls.get({
+          owner,
+          repo,
+          pull_number: ciPlatform.PR_IID,
+        });
+
+        const pr = response.data;
+
+        return {
+          id: String(pr.id),
+          title: pr.title ?? "",
+          author: pr.user?.login ?? "",
+          sourceBranch: pr.head.ref,
+          targetBranch: pr.base.ref,
+          webUrl: pr.html_url,
+        };
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Unknown error while contacting GitHub";
+        console.error(
+          `Failed to fetch PR ${ciPlatform.PR_IID} from ${ciPlatform.repoSlug}: ${message}`,
+        );
+        return null;
+      }
     },
     postComment: async (md: string) => {
+      const [owner, repo] = ciPlatform.repoSlug.split("/");
+      try {
+        const res = await API.issues.createComment({
+          body: md,
+          issue_number: ciPlatform.PR_IID,
+          owner: owner!,
+          repo: repo!,
+        });
+      } catch {
+        console.error("not posted :(");
+      }
+
       // Implement GitHub specific logic to post a comment
     },
   };
 };
 
-export interface GithubProvider extends Provider {
+const githubActions = (env = process.env): GithubActionsPlatform => {
+  let eventPath: string = env.GITHUB_EVENT_PATH || "github/workflow/event.json";
+  const event: GithubWebhookEvent = JSON.parse(readFileSync(eventPath, "utf8"));
+
+  return {
+    name: "Github Actions",
+    PR_IID: event.pull_request.number ?? event.issue.number,
+    repoSlug:
+      event.pull_request !== undefined
+        ? event.pull_request.base.repo.full_name
+        : event.repository.full_name,
+  };
+};
+
+type GithubWebhookEvent = any;
+
+export interface GithubActionsPlatform extends CIPlatform {
+  name: "Github Actions";
+}
+
+export interface GithubProvider extends RepoProvider {
   name: "github";
   getPR: () => Promise<GithubPRInfo | null>;
 }
 
 export interface GithubPRInfo extends PRInfo {}
-
-export const githubFacade = () => {
-  const octokit = new Octokit();
-
-  return {
-    commits: null,
-    issue: null,
-    pr: null,
-    reviews: null,
-    utils: null,
-    postMessage: (msg: string) => null,
-  };
-};

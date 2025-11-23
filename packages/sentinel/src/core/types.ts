@@ -30,15 +30,21 @@ export interface PRInfo {
   webUrl?: string;
 }
 
-export interface Provider {
-  name: "local" | "github" | "gitlab" | "bitbucket";
+export interface RepoProvider {
+  readonly name: "local" | "github" | "gitlab" | "bitbucket";
   getDiff: () => Promise<DiffFile[]>;
   getPR: () => Promise<PRInfo | null>;
   postComment(markdown: string): Promise<void>;
 }
 
+export interface CIPlatform {
+  readonly name: string;
+  readonly PR_IID: number;
+  readonly repoSlug: string;
+}
+
 export type SentinelContext = {
-  provider: Provider;
+  provider: RepoProvider;
   cwd: string;
   env: any;
   report: Reporter;

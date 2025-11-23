@@ -1,9 +1,9 @@
 import type { SentinelSettings } from "./config";
 import { createReporter } from "./reporter";
-import type { Provider, SentinelContext, SentinelPlugin } from "./types";
+import type { RepoProvider, SentinelContext, SentinelPlugin } from "./types";
 
 export const runAll = async (
-  provider: Provider,
+  provider: RepoProvider,
   plugins: SentinelPlugin[],
   settings: SentinelSettings,
 ) => {

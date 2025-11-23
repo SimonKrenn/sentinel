@@ -1,0 +1,16 @@
+stages:
+  - preview
+
+image: oven/bun:1.1.20
+
+variables:
+  ASTRO_TELEMETRY_DISABLED: "1"
+
+default:
+  before_script:
+    - bun install --frozen-lockfile
+
+sentinel:preview:
+  stage: preview
+  script:
+    - bun run sentinel:preview

@@ -17,6 +17,9 @@
     "docs:dev": "bun run --filter @sentinel-ts/docs dev",
     "docs:build": "bun run --filter @sentinel-ts/docs build",
     "docs:preview": "bun run --filter @sentinel-ts/docs preview",
-		"preview:github": "bun run --elide-lines 0 --filter @sentinel-ts/sentinel preview:github "
+		"sentinel:preview": "bun run --filter @sentinel-ts/sentinel sentinel:preview"
+  },
+  "devDependencies": {
+    "gitlab-ci-local": "^4.63.0"
   }
 }

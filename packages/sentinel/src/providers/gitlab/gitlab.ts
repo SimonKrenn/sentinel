@@ -1,18 +1,18 @@
-import type { Provider } from "../../core/types";
+import type { RepoProvider } from "../../core/types";
 
-export const gitlabProvider = (env = process.env): Provider => {
-  return {
-    name: "gitlab",
-    getDiff: async (): Promise<any[]> => {
-      // Implement GitLab specific logic to get the diff
-      return [];
-    },
-    getPR: async () => {
-      // Implement GitLab specific logic to get the merge request
-      return null;
-    },
-    postComment: async (md: string) => {
-      // Implement GitLab specific logic to post a comment
-    },
-  };
+export const gitlabProvider = (env = process.env): RepoProvider => {
+	return {
+		name: "gitlab",
+		getDiff: async (): Promise<any[]> => {
+			// Implement GitLab specific logic to get the diff
+			return [];
+		},
+		getPR: async () => {
+			// Implement GitLab specific logic to get the merge request
+			return null;
+		},
+		postComment: async (md: string) => {
+			// Implement GitLab specific logic to post a comment
+		},
+	};
 };

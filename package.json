@@ -16,6 +16,7 @@
     "build:prod": "bun run --filter @sentinel-ts/sentinel build:prod",
     "docs:dev": "bun run --filter @sentinel-ts/docs dev",
     "docs:build": "bun run --filter @sentinel-ts/docs build",
-    "docs:preview": "bun run --filter @sentinel-ts/docs preview"
+    "docs:preview": "bun run --filter @sentinel-ts/docs preview",
+		"preview:github": "bun run --elide-lines 0 --filter @sentinel-ts/sentinel preview:github "
   }
 }

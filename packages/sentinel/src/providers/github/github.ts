@@ -1,7 +1,12 @@
 import { Octokit } from "@octokit/rest";
 import { readFileSync } from "fs";
-import { logger } from "../../core/logger";
-import type { CIPlatform, PRInfo, RepoProvider } from "../../core/types";
+import type {
+  CIPlatform,
+  DiffFile,
+  PRInfo,
+  RepoProvider,
+} from "../../core/types";
+import type { Git, GitMetaData, PRDiff } from "../../core/types/git";
 
 const log = logger.child("provider:github");
 
@@ -17,7 +22,7 @@ export const github = (env = process.env): GithubProvider => {
     getPR: async () => {
       const [owner, repo] = ciPlatform.repoSlug.split("/");
       if (!owner || !repo) {
-        log.error(`Invalid GitHub repo slug: ${ciPlatform.repoSlug}`);
+        console.error(`Invalid GitHub repo slug: ${ciPlatform.repoSlug}`);
         return null;
       }
 
@@ -43,8 +48,8 @@ export const github = (env = process.env): GithubProvider => {
           error instanceof Error
             ? error.message
             : "Unknown error while contacting GitHub";
-        log.error(
-          `Failed to fetch PR ${ciPlatform.PR_IID} from ${ciPlatform.repoSlug}: ${message}`,
+        console.error(
+          `Failed to fetch PR ${ciPlatform.PR_IID} from ${ciPlatform.repoSlug}: ${message}`
         );
         return null;
       }
@@ -58,18 +63,52 @@ export const github = (env = process.env): GithubProvider => {
           owner: owner!,
           repo: repo!,
         });
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "Unknown error posting comment";
-        log.error(
-          `Failed to post GitHub comment for ${ciPlatform.repoSlug}#${ciPlatform.PR_IID}: ${message}`,
-        );
+      } catch {
+        console.error("not posted :(");
       }
-
-      // Implement GitHub specific logic to post a comment
     },
+    git: function (): Promise<Git> {
+      return new Promise<Git>((resolve, reject) => {
+        resolve({
+          base: {
+            ref: "main",
+            sha: "abc123",
+          },
+          head: {
+            ref: "feature-branch",
+            sha: "def456",
+          },
+          created: [],
+          deleted: [],
+          modified: [],
+          fileDiff: (filename) => {
+            throw Error("not implemented");
+          },
+        });
+      });
+    },
+  };
+};
+
+const getBranchInfo = (): GitMetaData & PRDiff => {
+  return {
+    created: [],
+    deleted: [],
+    modified: [],
+    base: {
+      ref: "",
+      sha: "",
+    },
+    head: {
+      ref: "",
+      sha: "",
+    },
+  };
+};
+
+const getGit = (): Git => {
+  return {
+    ...getBranchInfo(),
   };
 };
 

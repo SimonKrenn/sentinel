@@ -1,3 +1,5 @@
+import type { Git } from "./types/git";
+
 export type Severity = "error" | "warn" | "info";
 export type LogLevel = "silent" | "error" | "warn" | "info" | "debug";
 
@@ -44,6 +46,7 @@ export interface RepoProvider {
   readonly name: "local" | "github" | "gitlab" | "bitbucket";
   getDiff: () => Promise<DiffFile[]>;
   getPR: () => Promise<PRInfo | null>;
+  git: () => Promise<Git>;
   postComment(markdown: string): Promise<void>;
 }
 

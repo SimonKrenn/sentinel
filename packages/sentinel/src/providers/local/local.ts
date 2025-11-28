@@ -1,5 +1,8 @@
 import { spawn } from "bun";
+import { logger } from "../../core/logger";
 import type { DiffFile, RepoProvider } from "../../core/types";
+
+const log = logger.child("provider:local");
 
 const git = async (args: string[]) => {
 	const proc = spawn(["git", ...args], { stdout: "pipe", stderr: "pipe" });
@@ -44,10 +47,10 @@ const getDiff = async () => {
 };
 
 const getPR = async () => {
-	console.error("not avaliable in this environment");
+	log.warn("Pull request metadata is not available in the local provider");
 	return null;
 };
 
 const postComment = async (md: string) => {
-	console.log(md);
+	log.info("Rendered Sentinel report:\n" + md);
 };

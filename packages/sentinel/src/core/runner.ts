@@ -1,4 +1,5 @@
 import type { SentinelSettings } from "./config";
+import { logger } from "./logger";
 import { createReporter } from "./reporter";
 import type { RepoProvider, SentinelContext, SentinelPlugin } from "./types";
 
@@ -8,12 +9,14 @@ export const runAll = async (
   settings: SentinelSettings,
 ) => {
   const report = createReporter();
+  const ctxLogger = logger.child("ctx");
 
   const ctx: SentinelContext = {
     provider,
     cwd: process.cwd(),
     env: process.env,
     report,
+    logger: ctxLogger,
     settings,
     readFile: (file: string) => Bun.file(file).text(),
   };

@@ -1,0 +1,27 @@
+[pr_agent]
+# Qodo Merge configuration for Sentinel
+# No automatic tools enabled
+
+[tools]
+# Disable all automatic tools
+auto_review = false
+auto_improve = false
+auto_test = false
+auto_analyze = false
+
+[review]
+# Basic review settings
+enabled = false
+suggest_changes = false
+
+[improve]
+# Code improvement settings
+enabled = false
+
+[test]
+# Testing settings
+enabled = false
+
+[analyze]
+# Code analysis settings
+enabled = false

@@ -4,7 +4,7 @@ import type { DiffFile, GitProvider } from "../../core/types";
 const log = logger.child("provider:local");
 
 const git = async (args: string[]) => {
-  log.info(`running git with args: ${args}`);
+  log.debug(`running git with args: ${args}`);
 
   let rootPath: string;
   try {

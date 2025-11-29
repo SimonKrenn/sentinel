@@ -7,6 +7,7 @@ import { loadConfig } from "./core/config";
 import type { SentinelPlugin } from "./core/types";
 import { resolveGitProvider } from "./providers/resolver";
 import { loadPlugins } from "./plugin/plugin";
+import { logger } from "./core/logger";
 
 const program = new Command()
   .name("Sentinel")
@@ -22,11 +23,19 @@ program
   });
 
 async function runCheck() {
-  const provider = resolveGitProvider(undefined, process.env);
+  logger.info("starting check");
+  const provider = resolveProvider(undefined, process.env);
   const cfg = await loadConfig();
 
   const plugins = await loadPlugins(cfg);
 
+  logger.debug(
+    `executing with provider: ${JSON.stringify(
+      provider
+    )}, plugins: ${JSON.stringify(plugins)}, settings: ${JSON.stringify(
+      cfg.settings
+    )}`
+  );
   await runAll(provider, plugins, cfg.settings || {});
 }
 

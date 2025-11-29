@@ -16,7 +16,8 @@ suggest_changes = false
 
 [improve]
 # Code improvement settings
-enabled = false
+enabled = true
+commitable_code_suggestions = true
 
 [test]
 # Testing settings

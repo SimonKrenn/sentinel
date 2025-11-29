@@ -1,31 +1,26 @@
-import { spawn } from "bun";
+import { $ } from "bun";
 import type { DiffFile, GitProvider } from "../../core/types";
 
 const log = logger.child("provider:local");
 
 const git = async (args: string[]) => {
   log.info(`running git with args: ${args}`);
-  const repoRoot = await spawn(["git", "rev-parse", "--show-toplevel"], {
-    stdout: "pipe",
-    stderr: "pipe",
-  });
-  const rootPath = await new Response(repoRoot.stdout).text();
-  const rootCode = await repoRoot.exited;
-  if (rootCode !== 0) {
-    throw new Error("Failed to get git repository root");
+
+  let rootPath: string;
+  try {
+    rootPath = (await $`git rev-parse --show-toplevel`.text()).trim();
+  } catch (error) {
+    log.error(error, "Failed to get git repository root");
+    throw new Error("Failed to get git repository root", { cause: error });
   }
 
-  const proc = spawn(["git", ...args], {
-    stdout: "pipe",
-    stderr: "pipe",
-    cwd: rootPath.trim(),
-  });
-  const out = await new Response(proc.stdout).text();
-  const code = await proc.exited;
-  if (code !== 0) {
-    throw new Error(`git ${args.join(" ")} failed`);
+  try {
+    const out = await $`git ${args}`.cwd(rootPath).text();
+    return out.trim();
+  } catch (error) {
+    log.error(error, `git ${args.join(" ")} failed`);
+    throw new Error(`git ${args.join(" ")} failed`, { cause: error });
   }
-  return out.trim();
 };
 
 export const localProvider = (): GitProvider => {

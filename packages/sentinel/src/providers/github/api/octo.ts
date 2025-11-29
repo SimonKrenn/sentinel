@@ -1,30 +1,60 @@
 import { Octokit } from "@octokit/rest";
 import type { GithubPRInfo } from "../github";
-import type { CIPlatform } from "../../../core/types";
+import type { CIProvider } from "../../../core/types";
 
-export const githubAPI = (config: { ci: CIPlatform; config: any }) => {
+export const githubAPI = (config: { ci: CIProvider; config: any }) => {
 	//todo: init Octokit
 	const octokit = new Octokit({ baseUrl: "", auth: undefined });
 
-	const getPRInfo = async (): Promise<GithubPRInfo> => {
-		//TODO get correct metadata for request
-		const pr = await octokit.pulls.get({
-			owner: "",
-			repo: "",
-			pull_number: 0,
-		});
+	if (!config.ci) {
+		throw Error("cannot determine CI Platform");
+	}
 
-		return {
-			author: pr.data.assignee?.id.toString() ?? "",
-			id: pr.data.id.toString(),
-			sourceBranch: pr.data.head.ref,
-			targetBranch: pr.data.base.ref,
-			title: pr.data.title,
-			webUrl: pr.data.html_url,
-		};
+	const [owner, repo] = config.ci.repoSlug.split("/");
+
+	const getPRInfo = async (): Promise<GithubPRInfo | undefined> => {
+		if (!owner || !repo) {
+			console.error("failed to get PR info");
+			return undefined;
+		}
+		try {
+			//TODO get correct metadata for request
+			const pr = await octokit.pulls.get({
+				owner: owner,
+				repo: repo,
+				pull_number: config.ci.PR_IID,
+			});
+
+			return {
+				author: pr.data.assignee?.id.toString() ?? "",
+				id: pr.data.id.toString(),
+				sourceBranch: pr.data.head.ref,
+				targetBranch: pr.data.base.ref,
+				title: pr.data.title,
+				webUrl: pr.data.html_url,
+			};
+		} catch (err) {
+			console.error("Error fetching PR info:", err);
+		}
 	};
 
-	const createComment = () => {};
+	const createComment = async (md: string) => {
+		if (!owner || !repo) {
+			console.error("failed to post comment");
+			return undefined;
+		}
+
+		try {
+			const res = await octokit.issues.createComment({
+				body: md,
+				issue_number: config.ci.PR_IID,
+				owner: owner,
+				repo: repo,
+			});
+		} catch {
+			console.error("not posted :(");
+		}
+	};
 
 	return {
 		getPRInfo,

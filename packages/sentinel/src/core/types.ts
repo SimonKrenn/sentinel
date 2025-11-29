@@ -42,22 +42,22 @@ export interface PRInfo {
   webUrl?: string;
 }
 
-export interface RepoProvider {
+export interface GitProvider {
   readonly name: "local" | "github" | "gitlab" | "bitbucket";
   getDiff: () => Promise<DiffFile[]>;
-  getPR: () => Promise<PRInfo | null>;
+  getPR: () => Promise<PRInfo | undefined>;
   git: () => Promise<Git>;
   postComment(markdown: string): Promise<void>;
 }
 
-export interface CIPlatform {
+export interface CIProvider {
   readonly name: string;
   readonly PR_IID: number;
   readonly repoSlug: string;
 }
 
 export type SentinelContext = {
-  provider: RepoProvider;
+  provider: GitProvider;
   cwd: string;
   env: any;
   report: Reporter;

@@ -4,7 +4,7 @@ Lint everything but your code.
 
 ## Monorepo layout
 - `packages/sentinel`: CLI source, tests, and build tooling
-- `docs`: Astro Starlight docs site
+- `docs`: Astro Starlight docs site (deployed)
 
 ## Setup
 Install all workspace dependencies from the repo root:

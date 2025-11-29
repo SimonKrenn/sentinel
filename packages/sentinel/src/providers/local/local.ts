@@ -39,10 +39,10 @@ const getDiff = async () => {
       const s = status?.startsWith("A")
         ? "added"
         : status?.startsWith("D")
-        ? "deleted"
-        : status?.startsWith("R")
-        ? "renamed"
-        : "modified";
+          ? "deleted"
+          : status?.startsWith("R")
+            ? "renamed"
+            : "modified";
 
       return { path: path ?? "", status: s } satisfies DiffFile;
     });

@@ -1,4 +1,5 @@
 export type Severity = "error" | "warn" | "info";
+export type LogLevel = "silent" | "error" | "warn" | "info" | "debug";
 
 export type ReportItem = {
   sev: Severity;
@@ -14,6 +15,15 @@ export type Reporter = {
   info: (msg: string, otps?: any) => void;
   markdown: (md: string) => void;
   summary: () => { items: ReportItem[]; toMarkdown: () => string };
+};
+
+export type Logger = {
+  level: LogLevel;
+  child: (scope: string) => Logger;
+  debug: (...args: unknown[]) => void;
+  info: (...args: unknown[]) => void;
+  warn: (...args: unknown[]) => void;
+  error: (...args: unknown[]) => void;
 };
 
 export type DiffFile = {
@@ -48,6 +58,7 @@ export type SentinelContext = {
   cwd: string;
   env: any;
   report: Reporter;
+  logger: Logger;
   settings: Record<string, unknown>;
   readFile: (file: string) => Promise<string>;
 };

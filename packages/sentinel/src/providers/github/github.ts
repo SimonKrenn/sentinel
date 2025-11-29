@@ -1,6 +1,9 @@
 import { Octokit } from "@octokit/rest";
 import { readFileSync } from "fs";
+import { logger } from "../../core/logger";
 import type { CIPlatform, PRInfo, RepoProvider } from "../../core/types";
+
+const log = logger.child("provider:github");
 
 export const github = (env = process.env): GithubProvider => {
   const ciPlatform = githubActions(env);
@@ -14,7 +17,7 @@ export const github = (env = process.env): GithubProvider => {
     getPR: async () => {
       const [owner, repo] = ciPlatform.repoSlug.split("/");
       if (!owner || !repo) {
-        console.error(`Invalid GitHub repo slug: ${ciPlatform.repoSlug}`);
+        log.error(`Invalid GitHub repo slug: ${ciPlatform.repoSlug}`);
         return null;
       }
 
@@ -40,7 +43,7 @@ export const github = (env = process.env): GithubProvider => {
           error instanceof Error
             ? error.message
             : "Unknown error while contacting GitHub";
-        console.error(
+        log.error(
           `Failed to fetch PR ${ciPlatform.PR_IID} from ${ciPlatform.repoSlug}: ${message}`,
         );
         return null;
@@ -55,8 +58,14 @@ export const github = (env = process.env): GithubProvider => {
           owner: owner!,
           repo: repo!,
         });
-      } catch {
-        console.error("not posted :(");
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Unknown error posting comment";
+        log.error(
+          `Failed to post GitHub comment for ${ciPlatform.repoSlug}#${ciPlatform.PR_IID}: ${message}`,
+        );
       }
 
       // Implement GitHub specific logic to post a comment

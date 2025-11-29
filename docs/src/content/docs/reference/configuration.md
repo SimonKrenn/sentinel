@@ -39,6 +39,7 @@ Each plugin receives a `SentinelContext` with:
 - `cwd`: the current working directory
 - `env`: environment variables
 - `report`: helper for producing the aggregated report
+- `logger`: leveled logger that respects the `SENTINEL_LOG_LEVEL` environment variable
 - `settings`: configuration from `SentinelConfig.settings`
 - `readFile`: helper for reading files relative to the current working directory
 

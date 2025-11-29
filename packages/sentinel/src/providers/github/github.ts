@@ -6,7 +6,6 @@ import type { CIPlatform, PRInfo, RepoProvider } from "../../core/types";
 const log = logger.child("provider:github");
 
 export const github = (env = process.env): GithubProvider => {
-
   const ciPlatform = githubActions(env);
   const API = new Octokit();
 
@@ -61,7 +60,9 @@ export const github = (env = process.env): GithubProvider => {
         });
       } catch (error) {
         const message =
-          error instanceof Error ? error.message : "Unknown error posting comment";
+          error instanceof Error
+            ? error.message
+            : "Unknown error posting comment";
         log.error(
           `Failed to post GitHub comment for ${ciPlatform.repoSlug}#${ciPlatform.PR_IID}: ${message}`,
         );

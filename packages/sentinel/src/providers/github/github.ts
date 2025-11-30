@@ -49,7 +49,7 @@ const getBranchInfo = (): GitMetaData & PRDiff => {
 const getGit = (): Git => {
   return {
     ...getBranchInfo(),
-    fileDiff: () => {
+    rawDiff: () => {
       throw new Error("not implemented yet");
     },
   };

@@ -4,7 +4,7 @@ import type { SentinelPlugin } from "./src/core/types.ts";
 const defaultPlugin: SentinelPlugin = {
   name: "defaultPlugin",
   run: async (ctx, diff, pr) => {
-    const { modified, fileDiff } = await ctx.provider.git();
+    const { modified, rawDiff: fileDiff } = await ctx.provider.git();
 
     ctx.report.info("Hello from defaultPlugin");
     ctx.report.info(`changed files: ${modified}`);

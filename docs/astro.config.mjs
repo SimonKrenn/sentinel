@@ -9,7 +9,7 @@ export default defineConfig({
       title: 'Sentinel',
       description: 'Lint everything but your code.',
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/SimonKrenn/sentinel' },
       ],
       sidebar: [
         {

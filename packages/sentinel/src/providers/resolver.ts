@@ -1,13 +1,14 @@
-import type { RepoProvider } from "../core/types";
+import type { CIProvider, GitProvider } from "../core/types";
 import { bitbucketProvider } from "./bitbucket/bitbucket";
+import { githubActions } from "./ci/github-actions";
 import { github } from "./github/github";
 import { gitlabProvider } from "./gitlab/gitlab";
 import { localProvider } from "./local/local";
 
-export const resolveProvider = (
+export const resolveGitProvider = (
   kind: string | undefined,
   env = process.env,
-): RepoProvider => {
+): GitProvider => {
   if (kind && kind !== "auto") {
     if (kind === "local") {
       return localProvider();
@@ -36,4 +37,16 @@ export const resolveProvider = (
   }
 
   return localProvider();
+};
+
+export const resolveCIProvider = (
+  kind: string | undefined,
+  env = process.env,
+): CIProvider | undefined => {
+  if (kind && kind !== "auto") {
+    if (kind === "Github Actions") {
+      return githubActions(env);
+    }
+  }
+  return undefined;
 };

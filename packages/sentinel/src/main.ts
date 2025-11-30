@@ -5,7 +5,7 @@ import { localProvider } from "./providers/local/local";
 import { runAll } from "./core/runner";
 import { loadConfig } from "./core/config";
 import type { SentinelPlugin } from "./core/types";
-import { resolveProvider } from "./providers/resolver";
+import { resolveGitProvider } from "./providers/resolver";
 import { loadPlugins } from "./plugin/plugin";
 
 const program = new Command()
@@ -22,7 +22,7 @@ program
   });
 
 async function runCheck() {
-  const provider = resolveProvider(undefined, process.env);
+  const provider = resolveGitProvider(undefined, process.env);
   const cfg = await loadConfig();
 
   const plugins = await loadPlugins(cfg);

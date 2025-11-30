@@ -1,6 +1,5 @@
 import { spawn } from "bun";
-import { logger } from "../../core/logger";
-import type { DiffFile, RepoProvider } from "../../core/types";
+import type { DiffFile, GitProvider } from "../../core/types";
 
 const log = logger.child("provider:local");
 
@@ -14,12 +13,15 @@ const git = async (args: string[]) => {
   return out.trim();
 };
 
-export const localProvider = (): RepoProvider => {
+export const localProvider = (): GitProvider => {
   return {
     name: "local",
     getDiff,
     getPR,
     postComment,
+    git: () => {
+      throw new Error("not implemented");
+    },
   };
 };
 
@@ -47,8 +49,8 @@ const getDiff = async () => {
 };
 
 const getPR = async () => {
-  log.warn("Pull request metadata is not available in the local provider");
-  return null;
+  console.error("not avaliable in this environment");
+  throw new Error("not implemented");
 };
 
 const postComment = async (md: string) => {

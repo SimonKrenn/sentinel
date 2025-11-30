@@ -5,7 +5,7 @@ export const ghActPullRequestEnv: Record<string, string> = {
   GITHUB_BASE_REF: "main",
   GITHUB_HEAD_REF: "feature/improve-provider-detection",
   GITHUB_EVENT_NAME: "pull_request",
-  GITHUB_EVENT_PATH: "/home/runner/_work/_temp/_github_workflow/event.json",
+  // GITHUB_EVENT_PATH: "/home/runner/_work/_temp/_github_workflow/event.json",
   GITHUB_REF: "refs/pull/1/merge",
   GITHUB_REPOSITORY: "sentinel-ts/nektosact-sample",
   GITHUB_WORKFLOW: "pull_request",

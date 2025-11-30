@@ -1,6 +1,6 @@
-import type { RepoProvider } from "../../core/types";
+import type { GitProvider } from "../../core/types";
 
-export const bitbucketProvider = (env = process.env): RepoProvider => {
+export const bitbucketProvider = (env = process.env): GitProvider => {
   return {
     name: "bitbucket",
     getDiff: async (): Promise<any[]> => {

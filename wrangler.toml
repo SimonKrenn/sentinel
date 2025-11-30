@@ -1,0 +1,13 @@
+name = "sentinel"
+compatibility_date = "2025-11-29"
+assets = {directory = "./docs/dist/"}
+
+[env.production]
+name = "sentinel"
+routes = [
+  { pattern = "sentinel.simonkrenn.dev", custom_domain = true }
+]
+
+[build]
+command = "bun run docs:build"
+
